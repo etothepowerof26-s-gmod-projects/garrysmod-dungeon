@@ -75,7 +75,7 @@ function GM:PlayerFullLoad(ply)
 	--DUNGEON:SendStartMenu(ply)
 end
 
-concommand.Add("fuck", function(ply)
+concommand.Add("testshowcmenu", function(ply)
 ply.SentClassData = false
 net.Start("DGN_CCREATE_ShowMenu")
 		net.Send(ply)
