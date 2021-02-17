@@ -36,7 +36,7 @@ hook.Add("HUDPaint", "DGN_HUD", function()
 	local xpbar_width = ScrW() / 4
 	
 	local xpbar_x = ScrW() / 2 - xpbar_width / 2
-	local xpbar_y = ScrH() / 2 -- + ScrH() / 3
+	local xpbar_y = ScrH() / 1.1 -- + ScrH() / 3
 
 	surface.SetDrawColor(bar_color:Unpack())
 	surface.DrawRect(xpbar_x, xpbar_y, xpbar_width, xpbar_height)

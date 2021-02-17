@@ -6,7 +6,10 @@ CCREATE = {}
 if SERVER then
 
 	// load all vgui menus before the actual panel logic
+	AddCSLuaFile("dgn_class_tooltip.lua")
+	AddCSLuaFile("dgn_class_button.lua")
 	AddCSLuaFile("dgn_basemenu.lua")
+	AddCSLuaFile("dgn_charcreate.lua")
 
 	AddCSLuaFile("panels.lua")
 

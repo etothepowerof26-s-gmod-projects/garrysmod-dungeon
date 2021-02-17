@@ -28,12 +28,12 @@ local function NetworkedAccessorNum(tab, key, method, default_get, default_set)
 	if not default_set then default_set = 0; end
 
 	tab["Get" .. (method or "Something")] = function(self)
-		return self:GetNWInt(key, 0)
+		return self:GetNWInt(key, default_get)
 	end
 
 	if SERVER then
 		tab["Set" .. (method or "Something")] = function(self, value)
-			value = tonumber(value) or 0
+			value = tonumber(value) or default_set
 			self:SetNWInt(key, value)
 		end
 	end

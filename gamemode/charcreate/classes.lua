@@ -8,6 +8,7 @@ function CCREATE:SendClassData(ply, class)
 	net.Start("DGN_CCREATE_RequestCharacterListOption")
 		net.WriteString(class.Name)
 		net.WriteString(class.FlavorText)
+		net.WriteString(class.Icon)
 		net.WriteUInt(class.BaseStats.health, 16)
 		net.WriteUInt(class.BaseStats.defense, 16)
 		net.WriteUInt(class.BaseStats.strength, 16)
@@ -56,6 +57,7 @@ do
 
 	WARRIOR.Name = "Warrior"
 	WARRIOR.FlavorText = "Highly valued swordsman."
+	WARRIOR.Icon = "icon16/stop.png"
 
 	WARRIOR.BaseStats = {
 		health = 115,
@@ -81,5 +83,7 @@ do
 		}
 	}
 
+	CCREATE.Classes[#CCREATE.Classes + 1] = WARRIOR
+	CCREATE.Classes[#CCREATE.Classes + 1] = WARRIOR
 	CCREATE.Classes[#CCREATE.Classes + 1] = WARRIOR
 end

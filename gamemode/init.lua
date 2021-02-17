@@ -58,11 +58,13 @@ function GM:PlayerFullLoad(ply)
 	print("Player", ply, "fully loaded.")
 
 	
+	net.Start("DGN_CCREATE_ShowMenu")
+	net.Send(ply)
+
 	timer.Simple(0.5, function()
 		self:DefaultPlyStats(ply)
 
-		net.Start("DGN_CCREATE_ShowMenu")
-		net.Send(ply)
+		CCREATE:SendClassesTo(ply)
 	end)
 
 
@@ -79,6 +81,7 @@ concommand.Add("testshowcmenu", function(ply)
 ply.SentClassData = false
 net.Start("DGN_CCREATE_ShowMenu")
 		net.Send(ply)
+		CCREATE:SendClassesTo(ply)
 end)
 
 function GM:CanPlayerSuicide(ply)
