@@ -110,10 +110,13 @@ function Player:StartSlayerQuest(boss_name, level)
 	local needed = quest_data.levels[level].kills
 	self:SetPData("SlayerNeededKills", needed)
 	self:SetNWInt("SlayerKillGoal", needed)
+
 	self:SetPData("SlayerKills", "0")
 	self:SetNWInt("SlayerRemainingKills", 0)
+
 	self:SetPData("SlayerLevel", level)
 	self:SetNWInt("SlayerLevel", level)
+
 	self:SetPData("Dungeon_SlayerQuestID", questdata_index)
 	self:SetNWInt("Dungeon_SlayerQuestID", questdata_index)
 
@@ -141,22 +144,26 @@ hook.Add("HandleProperEnemyDeath", "Slayer", function(pl, ent)
 	if not pl then return end
 
 	if (pl:GetNWString("Dungeon_SlayerQuestID", "") != "") then
-		PrintMessage(3, "SLAYERQUEST")
+		-- PrintMessage(3, "SLAYERQUEST")
 		local needed = pl:GetNWInt("SlayerKillGoal", 0)
 		local curr = pl:GetNWInt("SlayerRemainingKills", 0)
 		if curr == needed and curr == 0 then
 			-- no quest so wtf
 			return
 		end
+
 		curr = curr + 1
 		pl:SetNWInt("SlayerRemainingKills", curr)
-		PrintMessage(3, tostring(curr) .. "/" .. tostring(needed))
-		print("AAAAAAAAAAAAAAAAAAA")
+
+		-- PrintMessage(3, tostring(curr) .. "/" .. tostring(needed))
+		-- print("AAAAAAAAAAAAAAAAAAA")
 
 		local boss_id = pl:GetNWInt("Dungeon_SlayerQuestID", -1)
 		if boss_id < 0 then return end
+
 		local quest_data = SLAYER.Bosses[boss_id]
 		if not quest_data then return end
+
 		local slayer_level = pl:GetNWInt("SlayerLevel", 0)
 		if not slayer_level or slayer_level == 0 then return end
 
@@ -167,19 +174,23 @@ hook.Add("HandleProperEnemyDeath", "Slayer", function(pl, ent)
 			local the_miniboss
 			for i = 1, #lv.miniboss_table.weights do
 				local w = lv.miniboss_table.weights[i]
-				print(w, i, miniboss_chance)
+				-- print(w, i, miniboss_chance)
 				if w >= miniboss_chance then
 					the_miniboss = i
-					print("SET")
+					-- print("SET")
 				end
 			end
-			PrintTable(lv.miniboss_table.ents)
-			print(i)
+
+			-- PrintTable(lv.miniboss_table.ents)
+			-- print(i)
+
 			the_miniboss = lv.miniboss_table.ents[the_miniboss]
 			local e = ents.Create(the_miniboss.ent)
 			e:SetPos(ent:GetPos())
+			-- TODO: Improve miniboss spawn. Search for an area (preferrably on top of the enemy that just died)
 			e:Spawn()
-			PrintMessage(3, "nice miniboss tho")
+
+			--PrintMessage(3, "nice miniboss tho")
 		end
 
 		if (curr > needed - 1) then
@@ -187,7 +198,7 @@ hook.Add("HandleProperEnemyDeath", "Slayer", function(pl, ent)
 			pl:SetNWString("Dungeon_SlayerQuestID", "")
 			pl:SetNWInt("SlayerRemainingKills", 0)
 			pl:SetNWInt("SlayerKillGoal", 0)
-			PrintMessage(3, "SPAWNED SLAYER BOSS")
+			-- PrintMessage(3, "SPAWNED SLAYER BOSS")
 		end
 	end
 end)
