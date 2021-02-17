@@ -16,6 +16,8 @@ if SERVER then
 	// serverside stuff
 	include("classes.lua")
 
+	util.AddNetworkString("DGN_CCREATE_CreateCharRequest")
+
 end
 
 if CLIENT then

@@ -84,6 +84,4 @@ do
 	}
 
 	CCREATE.Classes[#CCREATE.Classes + 1] = WARRIOR
-	CCREATE.Classes[#CCREATE.Classes + 1] = WARRIOR
-	CCREATE.Classes[#CCREATE.Classes + 1] = WARRIOR
 end
