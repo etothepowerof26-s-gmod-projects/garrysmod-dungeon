@@ -32,6 +32,8 @@ function GM:PlayerInitialSpawn(ply)
 
 	ply:SetTeam(420)
 
+	-- GAMEMODE:PlayerSpawnAsSpectator(ply)
+
 end 
 
 function GM:PlayerSpawn(ply)
@@ -43,7 +45,12 @@ function GM:PlayerSpawn(ply)
 	ply:SetTeam(420)
 	-- ply:SendLua[[hook.Remove("CalcView", "DGN_SpawnNoLoad")]]
 
-	-- GAMEMODE:PlayerSpawnAsSpectator(ply)
+	if not ply.TESTLOAD then
+		GAMEMODE:PlayerSpawnAsSpectator(ply)
+	else
+		ply:SetTeam(TEAM_UNASSIGNED)
+		ply:UnSpectate()
+	end
 		self:DefaultPlyStats(ply)
 
 

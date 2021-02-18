@@ -33,11 +33,13 @@ function CCREATE:SendClassesTo(ply)
 		return
 	end
 
+	-- TODO: Use data funcs to find character data
+
 	if (ply.SentClassData) then return end
 	ply.SentClassData = true
 
 	net.Start("DGN_CCREATE_Request")
-		net.WriteUInt(#self.Classes, 4)
+		net.WriteUInt(#self.Classes, 8)
 	net.Send(ply)
 
 	timer.Simple(0.5, function()
@@ -51,6 +53,15 @@ function CCREATE:SendClassesTo(ply)
 		end
 	end)
 end
+
+net.Receive("DGN_CCREATE_Request", function(len, ply)
+	if not ply.TESTLOAD then
+		ply.TESTLOAD = true
+		ply:Spawn()
+	else
+		return
+	end
+end)
 
 do
 	local WARRIOR = {}

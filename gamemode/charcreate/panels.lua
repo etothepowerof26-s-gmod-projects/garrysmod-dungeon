@@ -9,7 +9,7 @@ CCREATE.AmntChars = 0
 CCREATE.Frame = nil
 
 net.Receive("DGN_CCREATE_Request", function()
-	CCREATE.AmntChars = net.ReadUInt(4)
+	CCREATE.AmntChars = net.ReadUInt(8)
 end)
 
 

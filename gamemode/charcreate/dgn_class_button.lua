@@ -14,6 +14,10 @@ function PANEL:DoClick()
 		function()
 			CCREATE.Frame:Close()
 			CCREATE.Frame = nil
+
+			net.Start("DGN_CCREATE_Request")
+				net.WriteUInt(self.ID, 8)
+			net.SendToServer()
 		end,
 		"Nah",
 		function() end
