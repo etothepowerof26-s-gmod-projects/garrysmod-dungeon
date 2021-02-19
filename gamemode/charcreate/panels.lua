@@ -12,7 +12,6 @@ net.Receive("DGN_CCREATE_Request", function()
 	CCREATE.AmntChars = net.ReadUInt(8)
 end)
 
-
 net.Receive("DGN_CCREATE_RequestCharacterListOption", function(len)
 	print("ShowList",len)
 	local class = {}
@@ -71,10 +70,19 @@ net.Receive("DGN_CCREATE_ShowMenu", function()
 	function f:DrawRest(w,h)
 		surface.SetTextColor(255, 255, 255, 255)
 		surface.SetFont("Trebuchet24")
+		do
 		local txt = "Loading... please wait"
 		local tw, th = surface.GetTextSize(txt)
 		surface.SetTextPos(ScrW() / 2 - tw / 2, ScrH() / 2 - ScrH() / 15 - th / 2)
 		surface.DrawText(txt)
+		end
+		do
+		local txt = "Got %s/%s characters"
+		txt = txt:format(CCREATE.AmntChars or 0, #(CCREATE.CachedCharList or {}))
+		local tw, th = surface.GetTextSize(txt)
+		surface.SetTextPos(ScrW() / 2 - tw / 2, ScrH() / 2 + ScrH() / 15 - th / 2)
+		surface.DrawText(txt)
+		end
 	end
 
 	--timer.Simple(5, function()
