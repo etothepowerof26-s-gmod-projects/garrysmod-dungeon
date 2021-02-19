@@ -55,12 +55,17 @@ function CCREATE:SendClassesTo(ply)
 end
 
 net.Receive("DGN_CCREATE_Request", function(len, ply)
-	if not ply.TESTLOAD then
-		ply.TESTLOAD = true
-		ply:Spawn()
-	else
-		return
-	end
+	local cid = net.ReadUInt(8)
+
+	local class = CCREATE.Classes[cid]
+
+	if not class then return end
+
+	ply:ChatPrint("You picked: " .. class.Name)
+
+	ply:SetDClassID(cid)
+
+	ply:Spawn()
 end)
 
 do
@@ -101,7 +106,7 @@ do
 	local MAGE = {}
 
 	MAGE.Name = "Mage"
-	MAGE.FlavorText = "Magic man do magic stuff"
+	MAGE.FlavorText = "Magic man do magic stuff."
 	MAGE.Icon = "icon16/stop.png"
 
 	MAGE.BaseStats = {

@@ -3,22 +3,6 @@ include("shared.lua")
 -- Character creation
 -- include( "dgn/cl_char.lua" )
 
-local TIME = 0
-local ROT_SPEED = 5
-hook.Remove("CalcView", "DGN_SpawnNoLoad", function( ply, pos, angles, fov )
-	TIME = TIME + FrameTime()
-
-	local view = {
-		origin = Vector(0, 0, 0),
-		angles = Angle(0, (TIME % (360 / ROT_SPEED)) * ROT_SPEED, 0),
-		fov = fov,
-		drawviewer = false
-	}
-
-	return view
-end)
-
-
 local bar_color = Color(0,0,0,161)
 local bar_xp_color = Color(31, 253, 124)
  
@@ -26,10 +10,24 @@ local frac_lerp
 local show_exp_lerp
 local xpbar_height = 15
 
+local class_colors = {
+	["Warrior"] = Color(255, 70, 70, 255),
+	["Mage"] = Color(70, 175, 255, 255)
+}
+
+local class_ids = {
+	-- TODO: not hardcode :)
+	"Warrior",
+	"Mage"
+}
+
 hook.Add("HUDPaint", "DGN_HUD", function()
 
 	local ply = LocalPlayer();
-	if (!ply:Alive()) then return; end
+
+	// if they're not alive or are in some random spectator mode
+	if (!ply:Alive()) then return end
+	if (ply:GetObserverMode() == OBS_MODE_ROAMING) then return end
 
 	local exp, need = ply:GetExperience(), ply:GetNeededExp()
 
@@ -63,10 +61,11 @@ hook.Add("HUDPaint", "DGN_HUD", function()
 	-- level / exp
 	surface.SetFont("TargetID")
 	do
+		local cid = LocalPlayer():GetDClassID()
 		local t = "Level "
-		t = t .. LocalPlayer():GetPLevel()
+		t = t .. LocalPlayer():GetPLevel() .. " " .. class_ids[cid]
 		local tw, th = surface.GetTextSize(t)
-		surface.SetTextColor(color_white:Unpack())
+		surface.SetTextColor(class_colors[class_ids[cid]]:Unpack())
 		surface.SetTextPos(ScrW() / 2 - tw / 2, xpbar_y - th)
 		surface.DrawText(t)
 	end
@@ -75,9 +74,7 @@ hook.Add("HUDPaint", "DGN_HUD", function()
 		local t = "%s / %s (%s%%)"	
 		t = t:format(tostring(exp), tostring(need), math.Round((exp / need) * 100, 1))
 		local tw, th = surface.GetTextSize(t)
-		local r,g,b,a = 255, 255, 255, 255
-		a = a * (show_exp_lerp)
-		surface.SetTextColor(r,g,b,a)
+		surface.SetTextColor(255, 255, 255, 255 * show_exp_lerp)
 		surface.SetTextPos(ScrW() / 2 - tw / 2, xpbar_y + th)
 		surface.DrawText(t)
 	end

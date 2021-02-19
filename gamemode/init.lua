@@ -11,15 +11,15 @@ include("slayer.lua")
 include("sv_customspawnfunc.lua")
 
 function GM:DefaultPlyStats(ply)
-		ply:SetPLevel(1)
-		ply:SetExperience(0)
-		ply:SetNeededExp(DUNGEON.GetNeededExperience(ply:GetPLevel()))
-		ply:SetDefense(0)
-		ply:SetMana(20)
-		ply:SetMaxMana(20)
-		ply:SetCritChance(5)
-		ply:SetCritDamage(50)
-		ply:SetStrength(10)
+	ply:SetPLevel(1)
+	ply:SetExperience(0)
+	ply:SetNeededExp(DUNGEON.GetNeededExperience(ply:GetPLevel()))
+	ply:SetDefense(0)
+	ply:SetMana(20)
+	ply:SetMaxMana(20)
+	ply:SetCritChance(5)
+	ply:SetCritDamage(50)
+	ply:SetStrength(10)
 end
 
 function GM:PlayerInitialSpawn(ply)
@@ -38,26 +38,17 @@ end
 
 function GM:PlayerSpawn(ply)
 
-	--timer.Simple(3,function()
-		--local w = ply:Give("tw_ttt_m16")
-		--w:SetClip1(99999)
-	--end)
 	ply:SetTeam(420)
 	-- ply:SendLua[[hook.Remove("CalcView", "DGN_SpawnNoLoad")]]
 
-	if not ply.TESTLOAD then
+	if ply:GetDClassID() == 0 then
 		GAMEMODE:PlayerSpawnAsSpectator(ply)
 	else
 		ply:SetTeam(TEAM_UNASSIGNED)
 		ply:UnSpectate()
 	end
-		self:DefaultPlyStats(ply)
 
-
-	--[[if !ply.SAFE then
-		GAMEMODE:PlayerSpawnAsSpectator(ply)
-		ply.SAFE = false;
-	end]]
+	self:DefaultPlyStats(ply)
 
 end
 
@@ -73,15 +64,6 @@ function GM:PlayerFullLoad(ply)
 
 		CCREATE:SendClassesTo(ply)
 	end)
-
-
-	// this is temporary
-	--ply.SAFE = true
-	--ply:UnSpectate()
-	--ply:SetTeam(1)
-	--ply:Spawn()
-	--ply:SendLua[[hook.Remove("CalcView", "DGN_SpawnNoLoad")]]
-	--DUNGEON:SendStartMenu(ply)
 end
 
 concommand.Add("testshowcmenu", function(ply)
@@ -100,7 +82,6 @@ function GM:CanPlayerSuicide(ply)
 end
 function GM:GetFallDamage( ply, speed )
 	local c = math.max( 0, math.ceil( 0.2418 * speed - 120.75 ) )
-	// print(math.ceil( 0.2418 * speed - 141.75 ))
 	return c
 end 
 

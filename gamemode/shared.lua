@@ -23,20 +23,25 @@ DUNGEON = DUNGEON || {}
 // I need to move this to sh_meta or something like that.
 local PLY = FindMetaTable("Player")
 
-local function NetworkedAccessorNum(tab, key, method, default_get, default_set)
+local function NetworkedAccessor(tab, plymeta, key, method, default_get, default_set)
 	if not default_get then default_get = 0; end
 	if not default_set then default_set = 0; end
 
 	tab["Get" .. (method or "Something")] = function(self)
-		return self:GetNWInt(key, default_get)
+		return self["GetNW" .. plymeta](self, key, default_get)
 	end
 
 	if SERVER then
 		tab["Set" .. (method or "Something")] = function(self, value)
-			value = tonumber(value) or default_set
-			self:SetNWInt(key, value)
+			value = value or default_set -- tonumber(value) or default_set
+			self["SetNW" .. plymeta](self, key, value)
 		end
 	end
+end
+
+-- eventually other accessor funcs may be used
+local function NetworkedAccessorNum(tab, key, method, default_get, default_set)
+	NetworkedAccessor(tab, "Int", key, method, default_get, default_set)
 end
 
 NetworkedAccessorNum(PLY, "m_iManaAmount", "Mana")
@@ -51,6 +56,10 @@ NetworkedAccessorNum(PLY, "m_iCritDmg", "CritDamage")
 NetworkedAccessorNum(PLY, "m_iLv", "PLevel", 0, 0)
 NetworkedAccessorNum(PLY, "m_iExp", "Experience", 0, 0)
 NetworkedAccessorNum(PLY, "m_iNextLevelExp", "NeededExp", 100, 0)
+
+//
+NetworkedAccessorNum(PLY, "m_iClassID", "DClassID", 0, 0)
+
 
 
 local BASE_EXP = 25
