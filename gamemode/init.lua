@@ -10,6 +10,8 @@ include("slayer.lua")
 -- custom spawn func
 include("sv_customspawnfunc.lua")
 
+include("npc/init.lua")
+
 function GM:DefaultPlyStats(ply)
 	ply:SetPLevel(1)
 	ply:SetExperience(0)
@@ -46,6 +48,9 @@ function GM:PlayerSpawn(ply)
 	else
 		ply:SetTeam(TEAM_UNASSIGNED)
 		ply:UnSpectate()
+		timer.Simple(2, function()
+			ply:Give("tw_ttt_m16")
+		end)
 	end
 
 	self:DefaultPlyStats(ply)
@@ -82,6 +87,11 @@ function GM:CanPlayerSuicide(ply)
 end
 function GM:GetFallDamage( ply, speed )
 	local c = math.max( 0, math.ceil( 0.2418 * speed - 120.75 ) )
+
+	if (GAMEMODE.WarriorDashCache[ply]) then
+		return 0
+	end
+	
 	return c
 end 
 

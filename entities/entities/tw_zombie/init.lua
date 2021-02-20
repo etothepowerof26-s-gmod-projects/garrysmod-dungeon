@@ -19,6 +19,7 @@ function ENT:Initialize()
 	self.SearchRadius = f
 	self.LoseTargetDist = f * 1.25
 
+
 end
 
 function ENT:OnKilled(dmg)

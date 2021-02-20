@@ -136,7 +136,7 @@ function ENT:DoAttack()
 
 	if en:GetPos():DistToSqr(self:GetPos()) < d then
 		local d=DamageInfo()
-		d:SetDamage(15)
+		d:SetDamage(self:GetSpecial() and 55 or 15)
 		d:SetDamageForce(en:GetForward())
 		d:SetDamagePosition(en:GetPos()+Vector(0,0,en:OBBCenter().z)+en:GetForward()*5)
 		d:SetDamageType(DMG_SLASH)

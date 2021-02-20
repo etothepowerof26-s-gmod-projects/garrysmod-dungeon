@@ -58,7 +58,16 @@ function GM:ProcessExperienceMultiplier(ply, enemy, exp)
 
 end
 
+hook.Add( "PlayerShouldTakeDamage", "DGN_PreventSelfDmg", function( ply, attacker )
+	if (ply == attacker) then
+		return false
+	end
+end)
+
 function GM:PlayerHurt( victim, attacker, remaining, taken )
+	--if (victim == attacker) then
+	--	return
+	--end
 	local pos = victim:GetPos()
 	local is_crit = false 
 	local filter = ents.FindInPVS(pos)

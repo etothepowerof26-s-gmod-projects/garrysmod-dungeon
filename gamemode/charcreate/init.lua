@@ -16,7 +16,16 @@ if SERVER then
 	// serverside stuff
 	include("classes.lua")
 
-	util.AddNetworkString("DGN_CCREATE_CreateCharRequest")
+	net.Receive("DGN_CCREATE_Request", function(len, ply)
+		local cid = net.ReadUInt(8)
+		local class = CCREATE.Classes[cid]
+
+		if not class then return end
+
+		ply:ChatPrint("You picked: " .. class.Name)
+		ply:SetDClassID(cid)
+		ply:Spawn()
+	end)
 
 end
 

@@ -17,8 +17,9 @@ local class_colors = {
 
 local class_ids = {
 	-- TODO: not hardcode :)
-	"Warrior",
-	"Mage"
+	[0] = "Unknown/Not loaded",
+	[1] = "Warrior",
+	[2] = "Mage"
 }
 
 hook.Add("HUDPaint", "DGN_HUD", function()
@@ -28,13 +29,14 @@ hook.Add("HUDPaint", "DGN_HUD", function()
 	// if they're not alive or are in some random spectator mode
 	if (!ply:Alive()) then return end
 	if (ply:GetObserverMode() == OBS_MODE_ROAMING) then return end
+	-- print(LocalPlayer():GetPLevel())
 
 	local exp, need = ply:GetExperience(), ply:GetNeededExp()
 
 	local xpbar_width = ScrW() / 4
 	
 	local xpbar_x = ScrW() / 2 - xpbar_width / 2
-	local xpbar_y = ScrH() / 1.1 -- + ScrH() / 3
+	local xpbar_y = ScrH() / 1.25 -- + ScrH() / 3
 
 	surface.SetDrawColor(bar_color:Unpack())
 	surface.DrawRect(xpbar_x, xpbar_y, xpbar_width, xpbar_height)
@@ -61,11 +63,14 @@ hook.Add("HUDPaint", "DGN_HUD", function()
 	-- level / exp
 	surface.SetFont("TargetID")
 	do
-		local cid = LocalPlayer():GetDClassID()
+		local cid = LocalPlayer():GetDClassID() or 0
+		cid = class_ids[cid]
+		local col = class_colors[cid] or color_white
+
 		local t = "Level "
-		t = t .. LocalPlayer():GetPLevel() .. " " .. class_ids[cid]
+		t = t .. (LocalPlayer():GetPLevel() or 1) .. " " .. cid
 		local tw, th = surface.GetTextSize(t)
-		surface.SetTextColor(class_colors[class_ids[cid]]:Unpack())
+		surface.SetTextColor(col:Unpack())
 		surface.SetTextPos(ScrW() / 2 - tw / 2, xpbar_y - th)
 		surface.DrawText(t)
 	end
@@ -101,6 +106,17 @@ net.Receive('DGN_DeathNotice', function(len)
 	// after the fact I realize that this is backwards.
 	// just swapped the arguments for now, will change later (probably not)
 	gamemode.Call( "AddDeathNotice", nick, ply_team, wclass, pretty_name, enm_team, wclass)
+end)
+
+concommand.Add("SavePos", function()
+	local text = "local pos = Vector(%s, %s, %s)\nlocal ang = Angle(%s, %s, %s)"
+	
+	local pos = LocalPlayer():GetPos()
+	local ang = LocalPlayer():GetAngles()
+	text = text:format(pos.x, pos.y, pos.z, ang.p, ang.y, ang.r)
+
+	SetClipboardText(text)
+	print(text)
 end)
 
 --concommand.Add( "asdadasds", function()

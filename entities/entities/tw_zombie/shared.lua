@@ -20,7 +20,7 @@ end
 -- total health
 function ENT:TotalMobHealth()
 	-- default is mobl evel * 10
-	return self:GetMobLevel() * 10
+	return 35 + ( ( self:GetMobLevel() - 1 ) * 15 )
 end
 
 -- called serverside
@@ -35,7 +35,7 @@ function ENT:DefaultVars()
 
 	if math.Rand(0,1) < 1 / 25 or _G.TW_FORCE_SPAWN then
 		_G.TW_FORCE_SPAWN = nil
-		self:SetMobLevel(25 + (5 * math.random(0, 5)))
+		self:SetMobLevel(25 + (5 * math.random(0, 15)))
 		self:SetSpecial(true)
 		PrintMessage(3, "A special " .. self.PrintName .. " has spawned! Kill it for extra loot!")
 	end
