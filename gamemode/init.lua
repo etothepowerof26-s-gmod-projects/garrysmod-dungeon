@@ -2,6 +2,7 @@ AddCSLuaFile("shared.lua")
 AddCSLuaFile("cl_init.lua")
 include("shared.lua")
 
+
 -- all the methods here
 include("dgn_core.lua")
 -- skills
@@ -11,6 +12,8 @@ include("slayer.lua")
 include("sv_customspawnfunc.lua")
 
 include("npc/init.lua")
+
+include("enemyspawner/init.lua")
 
 function GM:DefaultPlyStats(ply)
 	ply:SetPLevel(1)
@@ -27,12 +30,14 @@ end
 function GM:PlayerInitialSpawn(ply)
 
 	ply:SetModel("models/player/kleiner.mdl")
+	ply:SetupHands(ply)
 
 	// for the full load mechanism
 	ply:SetVar("NotFullyLoaded", true)
 	ply:SetVar("StartLoadTime", SysTime())
 
 	ply:SetTeam(420)
+	self:DefaultPlyStats(ply)
 
 	-- GAMEMODE:PlayerSpawnAsSpectator(ply)
 
@@ -50,10 +55,12 @@ function GM:PlayerSpawn(ply)
 		ply:UnSpectate()
 		timer.Simple(2, function()
 			ply:Give("tw_ttt_m16")
+			ply:Give("tw_bonerang")
+			
+			ply:Give("weapon_crowbar")
 		end)
 	end
 
-	self:DefaultPlyStats(ply)
 
 end
 
@@ -106,3 +113,32 @@ hook.Add("SetupMove", "FullLoadSetup", function(ply, _, cmd)
 		GAMEMODE:PlayerFullLoad(ply)
 	end
 end)
+
+
+
+function GM:PostGamemodeLoaded()
+
+	hook.Add("Tick", "DGN_TickPostGamemodeLoad", function()
+		hook.Remove("Tick", "DGN_TickPostGamemodeLoad")
+		local L = Log("gdungeon")
+
+		http.Fetch("https://api.github.com/repos/etothepowerof26-s-gmod-projects/garrysmod-dungeon/commits/master", function(body)
+			local tab = util.JSONToTable(body)
+			local latest = tab.commit.tree.sha:sub(1, 12) .. "..."
+			L("Gamemode is fully loaded. Running version", latest, "from", tab.commit.author.date)
+		end)
+	end)
+	
+end
+
+function GM:PlayerSetHandsModel( ply, ent )
+
+	local simplemodel = player_manager.TranslateToPlayerModelName( ply:GetModel() )
+	local info = player_manager.TranslatePlayerHands( simplemodel )
+	if ( info ) then
+		ent:SetModel( info.model )
+		ent:SetSkin( info.skin )
+		ent:SetBodyGroups( info.body )
+	end
+
+end

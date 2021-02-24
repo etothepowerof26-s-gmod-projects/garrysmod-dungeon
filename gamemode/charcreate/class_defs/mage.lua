@@ -23,4 +23,5 @@ do
 	}
 
 	CCREATE.Classes[#CCREATE.Classes + 1] = MAGE
+	Log("charcreate")("Registered class", MAGE.Name, MAGE)
 end

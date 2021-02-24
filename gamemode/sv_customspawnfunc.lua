@@ -11,7 +11,7 @@ end)
 concommand.Add("CreateZ", function(ply)
 	local max = 25
 	local sp = ply:GetPos()
-	for i = 0, max do
+	for i = 1, max do
 		local ang = (360 / max) * (i - 1)
 		local d = math.rad(ang)
 		local xo = math.sin(d)

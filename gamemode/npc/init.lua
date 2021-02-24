@@ -1,4 +1,5 @@
 --
+local L = Log("npcspawner")
 
 local pos = {
 	{
@@ -16,6 +17,8 @@ local function spawn()
 		ent:Spawn()
 		ent:SetPos(data.pos)
 		ent:SetAngles(data.ang)
+
+		L("Data:", data.ent, data.pos, ent) 
 	end
 end
 
@@ -28,6 +31,9 @@ concommand.Add("dgn_force_respawn_ents", function(ply)
 		return
 	end
 
+	
+	L("Ents were forced to spawn by", (ply == NULL and "Console" or ply:Nick() .. "[" .. ply:EntIndex() .. "]"))
+
 	for k,v in pairs(ents.FindByClass("dgn_*")) do
 		if v:GetClass() == "dgn_npc" or v.Base == "dgn_npc" then
 			v:Remove()
@@ -38,6 +44,7 @@ concommand.Add("dgn_force_respawn_ents", function(ply)
 end)
 
 concommand.Add("delall", function()
+	L("delall was used, prepare for shit to break")
 	for k,v in pairs(ents.FindByClass("tw_*")) do
 		--if v:GetClass() == "dgn_npc" or v.Base == "dgn_npc" then
 			v:Remove()

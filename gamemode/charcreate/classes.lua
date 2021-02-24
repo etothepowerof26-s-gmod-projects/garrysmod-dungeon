@@ -1,10 +1,15 @@
 CCREATE.Classes = {}
 
+local L = Log("charcreate")
+
 util.AddNetworkString("DGN_CCREATE_Request")
 util.AddNetworkString("DGN_CCREATE_ShowMenu")
 util.AddNetworkString("DGN_CCREATE_RequestCharacterListOption")
 
 function CCREATE:SendClassData(ply, class)
+
+	L("SEND CLASS DATA", ply, class.Name)
+
 	net.Start("DGN_CCREATE_RequestCharacterListOption")
 		net.WriteString(class.Name)
 		net.WriteString(class.FlavorText)
@@ -26,6 +31,7 @@ function CCREATE:SendClassData(ply, class)
 			end
 		end
 	net.Send(ply)
+
 end
 
 function CCREATE:SendClassesTo(ply)
@@ -34,9 +40,10 @@ function CCREATE:SendClassesTo(ply)
 	end
 
 	-- TODO: Use data funcs to find character data
-
 	if (ply.SentClassData) then return end
 	ply.SentClassData = true
+
+	L("Player loaded and is ready for class data", ply)	
 
 	net.Start("DGN_CCREATE_Request")
 		net.WriteUInt(#self.Classes, 8)

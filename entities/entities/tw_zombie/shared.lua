@@ -33,7 +33,7 @@ function ENT:DefaultVars()
 		self:SetMobLevel(self:GetMobLevel() + 1)
 	end
 
-	if math.Rand(0,1) < 1 / 25 or _G.TW_FORCE_SPAWN then
+	if math.Rand(0,1) < 1 / 512 or _G.TW_FORCE_SPAWN then
 		_G.TW_FORCE_SPAWN = nil
 		self:SetMobLevel(25 + (5 * math.random(0, 15)))
 		self:SetSpecial(true)

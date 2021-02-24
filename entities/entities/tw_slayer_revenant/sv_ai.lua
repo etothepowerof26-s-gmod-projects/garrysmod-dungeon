@@ -149,7 +149,7 @@ function ENT:ChaseEnemy(options)
 		if not self.LastPosTimer then 
 			self.LastPosTimer = SysTime()
 		end
-		print(self:GetPos(), self.LastComputedPos == self:GetPos(), self.LastPosTimer or -1, SysTime() > self.LastPosTimer + 5)
+		-- print(self:GetPos(), self.LastComputedPos == self:GetPos(), self.LastPosTimer or -1, SysTime() > self.LastPosTimer + 5)
 		if not self.LastComputedPos then
 			self.LastComputedPos = self:GetPos()
 		end

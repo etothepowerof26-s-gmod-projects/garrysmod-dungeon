@@ -1,5 +1,7 @@
 -- level up
 
+
+
 function GM:CanPlayerLevelUp(ply)
 	return (ply:GetExperience() >= ply:GetNeededExp())
 end
@@ -27,7 +29,7 @@ function GM:HandleProperEnemyDeath(ply, enm, t)
 
 	if (not t) then t = 2; end
 	
-	// don't know if it's the right call
+	-- don't know if it's the right call
 	local pos = enm:GetPos()
 
 	net.Start("DGN_DeathNotice")
@@ -51,7 +53,7 @@ function GM:ProcessExperienceMultiplier(ply, enemy, exp)
 
 	local total
 	
-	// just for lols
+	-- just for lols
 	total = 1
 
 	return total -- exp * total
@@ -91,24 +93,29 @@ function GM:ScaleNPCDamage( npc, hitgroup, dmg )
 	
 	
 	
-	// dmg calc
+	-- dmg calc
 	local REALDMG = dmg:GetDamage()
 
-	// randomize with range
-	REALDMG = math.random(REALDMG * 0.8, REALDMG * 1.2)
-	
-	// strength
+	print(dmg, REALDMG)
+
+	--if (dmg:GetMaxDamage() != 6942069) then
+	--	REALDMG = math.random(REALDMG * 0.8, REALDMG * 1.2)
+	--end
+
+	-- strength
 	local str = pl:GetStrength()
 	if str > 0 then
 		REALDMG = REALDMG + (3 + math.ceil(str / 10))
-		REALDMG = REALDMG * (1 + str / 150)
+		REALDMG = math.ceil(REALDMG * (1 + str / 150))
 	end
 
-	// pl:SetStrength(pl:GetStrength() + 1)
+	print(dmg, REALDMG)
+
+	-- pl:SetStrength(pl:GetStrength() + 1)
 	--PrintMessage(3, dmg:GetDamage() .. " -> " .. REALDMG)
 	--PrintMessage(3, tostring(pl:GetStrength()) .. " (" .. (REALDMG - dmg:GetDamage()) .. " added)")
 	
-	// critical hits
+	-- critical hits
 	local c_ch = math.Clamp(pl:GetCritChance(), 0, 100)
 	local c_cd = pl:GetCritDamage()
 	local is_crit = false
@@ -120,7 +127,7 @@ function GM:ScaleNPCDamage( npc, hitgroup, dmg )
 	end
 
 
-	// ceil the damage so no decimal
+	-- ceil the damage so no decimal
 	REALDMG = math.ceil(REALDMG)
 	dmg:SetDamage(REALDMG)
 

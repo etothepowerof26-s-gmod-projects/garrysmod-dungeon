@@ -1,5 +1,5 @@
 ENT.Base = "tw_zombie";
-ENT.PrintName = "Revenant";
+ENT.PrintName = "Morbus";
 
 ENT.Author = 'twentysix';
 
@@ -14,12 +14,13 @@ ENT.MaxEXPFromKill = 750;
 -- total health
 function ENT:TotalMobHealth()
 	-- default is mobl evel * 10
-	return 10000
+	return 4000000
 end
 
 -- called serverside
 function ENT:DefaultVars()
-	self:SetMobLevel(125)
+	self:SetMobLevel(1350)
+	self.MinEXPFromKill, self.MaxEXPFromKill = 1e4, 2e4
 
 	--for i = 1, 100 do
 	--	if math.random(1, 2) == 1 then break; end

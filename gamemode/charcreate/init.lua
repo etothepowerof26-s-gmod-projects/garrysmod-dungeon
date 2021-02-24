@@ -3,7 +3,11 @@
 
 CCREATE = {}
 
+
+
 if SERVER then
+
+	local L = Log("charcreate")
 
 	// load all vgui menus before the actual panel logic
 	AddCSLuaFile("dgn_class_tooltip.lua")
@@ -21,6 +25,8 @@ if SERVER then
 		local class = CCREATE.Classes[cid]
 
 		if not class then return end
+
+		L("Player wanted class id", ply, cid, class.Name)
 
 		ply:ChatPrint("You picked: " .. class.Name)
 		ply:SetDClassID(cid)

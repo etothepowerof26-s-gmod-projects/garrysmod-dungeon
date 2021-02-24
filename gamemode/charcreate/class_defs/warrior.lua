@@ -30,27 +30,26 @@ do
 	}
 
 	CCREATE.Classes[#CCREATE.Classes + 1] = WARRIOR
+	Log("charcreate")("Registered class", WARRIOR.Name, WARRIOR)
 end
 
 local ply_w_presses = setmetatable({}, { __mode = "k" })
 local U = 500 ^ 2
 
-local function fart()
+local function reinit()
 	GAMEMODE.WarriorDashCache = setmetatable({}, { __mode = "k" })
 end
 
-hook.Add("PostGamemodeLoaded", "DGN_WarrCach", fart)
+hook.Add("PostGamemodeLoaded", "DGN_WarrCach", reinit)
 
 hook.Add( "KeyPress", "keypress_use_hi", function( ply, key )
-	local class = ply:GetDClassID()
-	class = CCREATE.Classes[class]
+	local class = CCREATE.Classes[ply:GetDClassID()]
 
-	local TIME = 0.35
-	if (ply:Ping() > 50) then
-		TIME = TIME + (ply:Ping() - 50) / 45
-	end
-
-	if (class.Name == "Warrior" and key == IN_FORWARD) then
+	if (class.Name == "Warrior" and key == IN_FORWARD and ply:GetPLevel() > 4) then
+		local TIME = 0.35
+		if (ply:Ping() > 50) then
+			TIME = TIME + (ply:Ping() - 50) / 45
+		end
 		local w_presses = ply_w_presses[ply]
 		if not w_presses then
 			ply_w_presses[ply] = {}
@@ -83,26 +82,14 @@ hook.Add("Think", "DGN_HandlePlayerFell", function()
 		if k:IsOnGround() then
 			GAMEMODE.WarriorDashCache[k] = nil
 			
-			--[[local gent = k:GetGroundEntity()
-			if (IsValid(gent) and gent != game.GetWorld()) then
-				DUNGEON.HandleWarriorDash(k, gent, gent:GetPos())
-			elseif (IsValid(gent) and gent == game.GetWorld()) then
-				
-			end]]
 			local effectdata = EffectData()
 			effectdata:SetOrigin( k:GetPos() )
 			util.Effect( "Explosion", effectdata )
-			util.BlastDamage( k, k, k:GetPos(), 500, 35 )
+			util.BlastDamage( k, k, k:GetPos(), 500, 65 )
 		end
 	end
 end)
 
-if DUNGEON.HandleWarriorDash then
-	fart()
+if (GAMEMODE and GAMEMODE.HandleWarriorDash) then
+	reinit()
 end
-
--- npc/dog/car_impact2.wav
--- ambient/materials/roust_crash2.wav
--- 
--- physics/metal/metal_large_debris1.wav
--- physics/metal/metal_large_debris2.wav

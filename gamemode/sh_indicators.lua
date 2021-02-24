@@ -139,7 +139,7 @@ if CLIENT then
 				local pos = data.real_pos
 
 				if data.ent:IsValid() then
-					pos = data.ent:LocalToWorld(data.real_pos)
+					pos = data.ent:GetPos()--pos = data.ent:LocalToWorld(data.real_pos)
 				end
 
 				local fade = math.Clamp(fraction ^ 0.25, 0, 1)
@@ -342,7 +342,7 @@ if CLIENT then
 		pos = pos or ent:EyePos()
 
 		if ent:IsValid() then
-			pos = ent:WorldToLocal(pos)
+			--pos = --ent:WorldToLocal(pos)
 		end
 
 		local rec = dmg > 0

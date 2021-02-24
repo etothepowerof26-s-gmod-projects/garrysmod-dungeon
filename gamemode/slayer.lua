@@ -1,4 +1,4 @@
-print("asdsdsdadadas")
+
 
 resource.AddFile( "models/monster/moub/morbus_epidemia.mdl" )
 resource.AddFile( "models/monster/moub/morbus_pestis.mdl" )

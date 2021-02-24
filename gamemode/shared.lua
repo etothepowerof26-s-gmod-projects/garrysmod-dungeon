@@ -3,6 +3,11 @@ GM.Author  = "N/A"
 GM.Email   = "N/A"
 GM.Website = "N/A"
 
+if SERVER then
+	
+	include("logging.lua")
+
+end
 
 AddCSLuaFile("sh_indicators.lua")
 include("sh_indicators.lua")
