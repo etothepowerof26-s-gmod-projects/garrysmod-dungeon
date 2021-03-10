@@ -1,5 +1,2 @@
-
-ESPAWN = {}
-
+﻿ESPAWN = {}
 ESPAWN.Zones = {}
-

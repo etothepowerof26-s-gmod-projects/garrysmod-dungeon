@@ -1,6 +1,6 @@
-include( "shared.lua" )
+﻿include("shared.lua")
 ENT.RenderGroup = RENDERGROUP_BOTH
 
 function ENT:Draw()
-	self:DrawModel()
+    self:DrawModel()
 end

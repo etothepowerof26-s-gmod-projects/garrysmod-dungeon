@@ -1,3 +1,4 @@
-push.bat
+*.bat
 *.TODO
 *.pdn
+*.exe
